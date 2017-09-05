@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dream.dflow.mapper.NodeMapper" >
+
+    <sql id="nodeInfoColumns">
+        id,processDefinitionId,nodeId,nodeType,nodeName,nextUser,userExpression,formKey
+    </sql>
+
+    <select id="getStartFormKey"  resultType="java.lang.String">
+        SELECT formKey FROM tb_node WHERE processDefinitionId = #{0} AND nodeType='startEvent'
+    </select>
+
+    <select id="getAllFormKey"  resultType="java.lang.String">
+        SELECT formKey FROM tb_node WHERE processDefinitionId = #{0} AND nodeType='process'
+    </select>
+
+    <select id="getStartUser" resultType="com.dream.dflow.entity.Node">
+        SELECT  * FROM tb_node WHERE processDefinitionId = #{0} AND nodeId in
+          (SELECT outGoingNodeId FROM tb_nodeinfo WHERE processDefinitionId = #{0} AND nodeType='startEvent')
+    </select>
+
+    <select id="getNextUser" resultType="com.dream.dflow.entity.Node">
+        SELECT  * FROM tb_node WHERE processDefinitionId = #{0} AND nodeId in
+          (SELECT outGoingNodeId FROM tb_nodeinfo WHERE processDefinitionId = #{0} AND nodeId=#{1})
+    </select>
+
+    <delete id="delete">
+        DELETE FROM tb_node WHERE processDefinitionId = #{processDefinitionId}
+    </delete>
+
+    <insert id="insertbatch" parameterType="java.util.List">
+        <selectKey keyProperty="fetchTime" order="BEFORE" resultType="java.lang.String">
+            SELECT CURRENT_TIMESTAMP()
+        </selectKey>
+        insert into tb_node (
+        id,
+        processDefinitionId,
+        nodeId,
+        nodeType,
+        nodeName,
+        nextUser,
+        userExpression,
+        formKey
+        ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.id},
+            #{item.processDefinitionId},
+            #{item.nodeId},
+            #{item.nodeType},
+            #{item.nodeName},
+            #{item.nextUser},
+            #{item.userExpression},
+            #{item.formKey}
+            )
+        </foreach>
+    </insert>
+</mapper>

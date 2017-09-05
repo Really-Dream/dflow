@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
+  <process id="first" name="第一" isExecutable="true">
+    <documentation>/flow/firstAll</documentation>
+    <startEvent id="start" name="开始" activiti:formKey="/flow/first"/>
+    <userTask id="busi" name="业务" activiti:assignee="${busi}}"/>
+    <userTask id="software" name="软件" activiti:assignee="${software}"/>
+    <userTask id="dev" name="开发" activiti:assignee="${dev}"/>
+    <userTask id="test" name="测试" activiti:assignee="${test}"/>
+    <userTask id="intest" name="集成测试" activiti:assignee="${intest}"/>
+    <endEvent id="end" name="结束"/>
+    <sequenceFlow id="flow1" sourceRef="start" targetRef="busi"/>
+    <sequenceFlow id="flow2" sourceRef="busi" targetRef="software"/>
+    <sequenceFlow id="flow4" sourceRef="software" targetRef="test">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nextStep == "test"}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="software" targetRef="dev">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nextStep == "dev"}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="dev" targetRef="intest"/>
+    <sequenceFlow id="flow6" sourceRef="intest" targetRef="end"/>
+    <sequenceFlow id="flow7" sourceRef="test" targetRef="end"/>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_first">
+    <bpmndi:BPMNPlane bpmnElement="first" id="BPMNPlane_first">
+      <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
+        <omgdc:Bounds height="30.0" width="30.0" x="105.0" y="225.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="busi" id="BPMNShape_busi">
+        <omgdc:Bounds height="80.0" width="100.0" x="180.0" y="200.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="software" id="BPMNShape_software">
+        <omgdc:Bounds height="80.0" width="100.0" x="325.0" y="200.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="dev" id="BPMNShape_dev">
+        <omgdc:Bounds height="80.0" width="100.0" x="480.0" y="90.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="test" id="BPMNShape_test">
+        <omgdc:Bounds height="80.0" width="100.0" x="480.0" y="285.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="intest" id="BPMNShape_intest">
+        <omgdc:Bounds height="80.0" width="100.0" x="625.0" y="90.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="end" id="BPMNShape_end">
+        <omgdc:Bounds height="28.0" width="28.0" x="900.0" y="226.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="425.0" y="204.51612903225805"/>
+        <omgdi:waypoint x="480.0" y="165.48387096774195"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="280.0" y="240.0"/>
+        <omgdi:waypoint x="325.0" y="240.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="580.0" y="130.0"/>
+        <omgdi:waypoint x="625.0" y="130.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="425.0" y="267.4193548387097"/>
+        <omgdi:waypoint x="480.0" y="297.5806451612903"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="135.0" y="240.0"/>
+        <omgdi:waypoint x="180.0" y="240.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="580.0" y="313.9322916666667"/>
+        <omgdi:waypoint x="900.3308731278219" y="243.02571818785194"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="725.0" y="153.01255230125523"/>
+        <omgdi:waypoint x="901.2823460926005" y="234.14668648613412"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
